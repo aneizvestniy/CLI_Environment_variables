@@ -1,0 +1,45 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Playwright: E2E (UI mode)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/examples/test-frameworks/playwright",
+      "program": "${workspaceFolder}/examples/test-frameworks/playwright/node_modules/@playwright/test/cli.js",
+      "args": ["test", "--config=playwright.config.e2e.ts", "--ui"],
+      "env": {
+        "ENV": "local"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Playwright: E2E (--debug)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/examples/test-frameworks/playwright",
+      "program": "${workspaceFolder}/examples/test-frameworks/playwright/node_modules/@playwright/test/cli.js",
+      "args": ["test", "--config=playwright.config.e2e.ts", "--debug", "--workers=1"],
+      "env": {
+        "ENV": "local",
+        "PWDEBUG": "1"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Playwright: API tests",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/examples/test-frameworks/playwright",
+      "program": "${workspaceFolder}/examples/test-frameworks/playwright/node_modules/@playwright/test/cli.js",
+      "args": ["test", "--config=playwright.config.api.ts"],
+      "env": {
+        "ENV": "local"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}

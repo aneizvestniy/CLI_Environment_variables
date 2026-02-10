@@ -78,4 +78,6 @@ npm run show-report
 
 - Презентація: `prezentations/04-Debug-your-tests.md`
 - Приклади: `docs/04-debug-your-tests/examples/`
+  - VS Code launch.json: `docs/04-debug-your-tests/examples/02-vscode-launch-json.md`
+  - WebStorm run config: `docs/04-debug-your-tests/examples/03-webstorm-run-config.md`
 - Вправи: `docs/04-debug-your-tests/exercises/`
