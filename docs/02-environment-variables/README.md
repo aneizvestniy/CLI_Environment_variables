@@ -39,8 +39,29 @@
 - Комітнули `.env` з паролями → треба видаляти з історії + міняти секрети.
 - Плутанина між `export VAR=...` (Unix) і `set VAR=...` (Windows).
 
+## Що підсвітити (ключові моменти)
+
+1) **Короткі env vars під час запуску**
+
+```bash
+BASE_URL=https://demoqa.com npx playwright test
+```
+
+2) **Секрети ніколи не комітимо**
+- `.env` у `.gitignore`
+- замість цього: `.env.example` без значень
+
+3) **Пайплайни (CI/CD)**
+- `.env` локальний файл CI не бачить
+- у CI використовуються secrets / env blocks
+
+4) **Розділяй app config vs test config**
+- `BASE_URL`, `API_BASE_URL` — app targets
+- `CI`, `PWDEBUG`, `ENV` — керування запуском
+
 ## Дивись також
 
 - Презентація: `prezentations/02-Environment-Variables.md`
 - Приклади: `docs/02-environment-variables/examples/`
 - Вправи: `docs/02-environment-variables/exercises/`
+- Runnable приклад: `examples/test-frameworks/playwright/.env.example`

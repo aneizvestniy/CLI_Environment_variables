@@ -1,38 +1,62 @@
-# Приклад: дебаг flaky тесту
+# Приклад: дебаг flaky тесту (практичний чекліст)
 
 ## Симптом
 
-Тест інколи падає: елемент не видимий або натискання не спрацювало.
+Тест інколи падає:
+- елемент не видимий
+- клік не спрацював
+- таймаут на `expect()`
 
-## Що робити
-
-1) Запусти тільки 1 тест:
-
-```bash
-npx playwright test tests/example.spec.ts -g "name" --headed
-```
-
-2) Додай debug:
+## Крок 1 — звузити запуск
 
 ```bash
-npx playwright test --debug
+# 1 воркер, 1 файл
+npx playwright test tests/e2e/01-demoqa-textbox.spec.ts --workers=1
+
+# або за назвою
+npx playwright test --grep "submit" --workers=1
 ```
 
-3) Встав `page.pause()` прямо перед проблемним місцем:
+## Крок 2 — headed + Inspector
+
+```bash
+npx playwright test --headed --debug
+```
+
+> Це найшвидший спосіб зрозуміти: локатор поганий чи сторінка не готова.
+
+## Крок 3 — зупинка в конкретному місці
 
 ```ts
 await page.pause();
 ```
 
-4) Перевір локатор у Inspector.
+Після паузи:
+- спробуй локатор picker
+- подивись, чи елемент реально є в DOM
 
-5) Замінити анти-патерни:
-- `waitForTimeout` → `expect(locator).toBeVisible()`
-- ручні sleeps → auto-wait
+## Крок 4 — дивимось репорт/trace
 
-## Порада
+Після прогону:
 
-Якщо flaky пов’язаний з мережевою частиною, додай:
+```bash
+npx playwright show-report
+```
+
+Якщо включений trace (`trace: 'on-first-retry'`) — він буде доступний в репорті.
+
+## Крок 5 — фіксимо причину
+
+✅ Робимо:
+- `expect(locator).toBeVisible()` / `toBeEnabled()` замість sleeps
+- стабільні локатори (`getByRole`, `getByLabel`, `getByTestId`)
+- чекаємо URL/ключовий елемент після навігації
+
+❌ Не робимо:
+- `waitForTimeout(5000)` як постійне рішення
+
+## Якщо flaky через мережу
+
 - retries на CI
 - trace `on-first-retry`
-- і вивчи HTML report
+- обмежити web-тести тегом `@web`

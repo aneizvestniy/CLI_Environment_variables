@@ -12,45 +12,67 @@
 
 Дебаг — це **процес**, а не одна команда. Хороший дебаг завжди має мету: *зрозуміти причину* і *зробити тест стабільним*.
 
-## Основні прийоми
+## Як дебажити (покроково)
 
-### 1) Звужуй проблему
+### Крок 0 — зроби проблему маленькою
 
-- 1 файл
-- 1 тест (`--grep`)
-- 1 воркер (`--workers=1`)
-
-### 2) Дивись на UI
-
-Для UI проблем:
+1) Запускай 1 файл:
 
 ```bash
-npx playwright test --headed --debug
+npx playwright test tests/e2e/01-demoqa-textbox.spec.ts --workers=1
 ```
 
-### 3) Inspector
+2) Якщо треба — ще звузь через `--grep`:
 
-`--debug` відкриває Playwright Inspector:
-- можна крокувати
-- дивитись локатори
-- бачити, що робить Playwright
+```bash
+npx playwright test --grep "submit" --workers=1
+```
 
-### 4) page.pause()
+### Крок 1 — відкрий браузер і Inspector
 
-Додаєш паузу у конкретному місці:
+```bash
+npm run test:debug
+```
+
+(це еквівалент `npx playwright test --config=playwright.config.e2e.ts --debug`)
+
+### Крок 2 — page.pause() у потрібному місці
 
 ```ts
 await page.pause();
 ```
 
-Працює тільки у headed/debug режимах.
+Після цього можна:
+- підсвічувати елементи
+- перевіряти локатори
+- виконувати команди в консольці Inspector
 
-### 5) Trace + HTML report
+### Крок 3 — дивись репорти
 
-- HTML report показує, *на якому кроці* упало
-- Trace дозволяє “прокрутити” кроки назад
+Після запуску:
 
-> Найчастіший анти-патерн новачків: лікувати flaky через `waitForTimeout()`. Це майже завжди погано.
+```bash
+npm run show-report
+```
+
+### Крок 4 — виправляй причину, не симптом
+
+Типові причини:
+- поганий локатор → зроби стабільнішим
+- елемент не готовий → `expect(locator).toBeVisible()`
+- flaky через мережу → retries + trace + стабілізація умов
+
+❌ Антипатерн:
+- `waitForTimeout(5000)`
+
+✅ Нормально:
+- `await expect(locator).toBeVisible()`
+- `await expect(page).toHaveURL(...)`
+
+## Корисні env vars для дебагу
+
+- `PWDEBUG=1` (часто відкриває інспектор)
+- `CI=true` (вмикає retries/workers як у CI)
 
 ## Дивись також
 

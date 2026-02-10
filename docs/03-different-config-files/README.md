@@ -45,4 +45,5 @@
 
 - Презентація: `prezentations/03-Different-config-files.md`
 - Приклади: `docs/03-different-config-files/examples/`
+- **Реальні конфіги в цьому репо**: `docs/03-different-config-files/examples/03-real-configs-in-this-repo.md`
 - Вправи: `docs/03-different-config-files/exercises/`

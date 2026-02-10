@@ -26,3 +26,5 @@ dotenv.config({ path: `.env.${process.env.ENV || 'local'}` });
 ```bash
 ENV=stage npx playwright test
 ```
+
+> Якщо ти змінив `.env.example`, не забудь оновити локальний `.env.local` / `.env.stage`.
